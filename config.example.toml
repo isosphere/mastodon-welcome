@@ -1,0 +1,21 @@
+[mastodon]
+client_id = "welcome-bot"
+base_url = "https://example.com"
+credential_storage = "../welcome_usercred.secret"
+secret_storage = "../welcome_clientcred.secret"
+
+[database]
+sqlite_path = "../database.db"
+
+# The first message is the opener. All others will appear in a reply chain.
+# Be mindful of your server's character limit - you also need enough room to @ the user (done automatically)
+[[messages]]
+content = """
+    Welcome to this server!
+"""
+
+[[messages]]
+content = """
+    I hope you have a good time!
+"""
+content_warning = "This is a content warning!"

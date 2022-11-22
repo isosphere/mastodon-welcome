@@ -46,7 +46,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "mastodon-py"
-version = "1.5.2"
+version = "1.6.3"
 description = "Python wrapper for the Mastodon API"
 category = "main"
 optional = false
@@ -159,8 +159,8 @@ idna = [
     {file = "idna-3.4.tar.gz", hash = "sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"},
 ]
 mastodon-py = [
-    {file = "Mastodon.py-1.5.2-py2.py3-none-any.whl", hash = "sha256:49afbf9f4347f355bee5638b71a5231b0e1164a58d253ccd9b4345d999c43369"},
-    {file = "Mastodon.py-1.5.2.tar.gz", hash = "sha256:c98fd97b7450cd02262669b80be20f53657b5540c4888a47231df11856910918"},
+    {file = "Mastodon.py-1.6.3-py2.py3-none-any.whl", hash = "sha256:50df93b7011d3a3fb2861cd677a2f06bc98d3aa619847a76735052ae5a98136c"},
+    {file = "Mastodon.py-1.6.3.tar.gz", hash = "sha256:a4911cad48ece7cd14541fd66b1315fa55f1f1db8a11f8cb3ee0e5021ff43c3e"},
 ]
 python-dateutil = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},

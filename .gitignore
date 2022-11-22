@@ -1,3 +1,4 @@
 *.secret
 *.db
 .venv
+config.toml
