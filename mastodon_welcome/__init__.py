@@ -32,7 +32,7 @@ if __name__ == '__main__':
         description = "Welcomes users to the Mastodon instance",
         epilog = "Note: the user this bot logs in as must have admin:read:accounts access"
     )
-    arg_parser.add_argument('--username', required=False, help="Only required for first execution")
+    arg_parser.add_argument('--email', required=False, help="Only required for first execution")
     arg_parser.add_argument('--password', required=False, help="Only required for first execution")
     arg_parser.add_argument('--config', default="config.toml")
     args = arg_parser.parse_args()
@@ -44,26 +44,30 @@ if __name__ == '__main__':
     mastodon = None
 
     if not os.path.exists(config['mastodon']['credential_storage']):
-        if not (args.username and args.password):
+        if not (args.email and args.password):
             print("Initial login has not yet occured - this is required to generate the credential file. Please supply login credentials (--username, --password)")
+            exit(-1)
         else:
+            print("Registering app")
             Mastodon.create_app(
                 config['mastodon']['client_id'],
                 api_base_url = config['mastodon']['base_url'],
                 to_file = config['mastodon']['secret_storage'],
-                scopes=["write", "admin:read"]
+                scopes=["write:statuses", "admin:read:accounts"]
             )
 
+            print("Initializing client")
             mastodon = Mastodon(
                 client_id = config['mastodon']['secret_storage'],
-                api_base_url = config['mastodon']['base_url']
+                api_base_url  = config['mastodon']['base_url']
             )
 
+            print("Performing login")
             mastodon.log_in(
-                'USERNAME',
-                'PASSWORD',
+                username = args.email,
+                password = args.password,
                 to_file = config['mastodon']['credential_storage'],
-                scopes=["write", "admin:read"]
+                scopes=["write:statuses", "admin:read:accounts"]
             )
     else:
         mastodon = Mastodon(
