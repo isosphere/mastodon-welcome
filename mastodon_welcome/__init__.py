@@ -5,10 +5,12 @@ import sqlite3
 import tomllib
 
 
-def check_db_exists(cursor: sqlite3.Cursor):
+def check_db_exists(cursor: sqlite3.Cursor) -> bool:
     res = cursor.execute("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='welcome_log'")
     if res.fetchone()[0] == 0:
         cursor.execute("CREATE TABLE welcome_log (id INTEGER PRIMARY KEY, username TEXT, userdb_id INTEGER, welcomed INTEGER DEFAULT 0)")
+        return False
+    return True
 
 def check_user_exists(cursor: sqlite3.Cursor, userid: int) -> bool:
     res = cursor.execute("SELECT COUNT(*) FROM welcome_log WHERE userdb_id = ?", (userid,))
@@ -75,7 +77,9 @@ if __name__ == '__main__':
     cursor = connection.cursor()
     
     # are our tables defined?
-    check_db_exists(cursor)  
+    fresh_database = not check_db_exists(cursor) 
+    if fresh_database:
+        print("Database was freshly created - we'll set all pre-existing users as of now to 'welcomed' to avoid spamming everyone on the server.")
 
     all_accounts = mastodon.admin_accounts(remote=False, status='active')
     for account in all_accounts:
@@ -89,7 +93,11 @@ if __name__ == '__main__':
             connection.commit()      
         
         # have we welcomed them yet?
-        if not check_user_welcomed(cursor, account.id):
+        if fresh_database:
+            set_user_welcomed(cursor, account.id)
+            connection.commit()
+        
+        elif not check_user_welcomed(cursor, account.id):
             result_id = None
             for message in config['messages']:
                 result = mastodon.status_post(status=f"@{account.username}, {message.content}", in_reply_to_id=result_id, visibility='unlisted', spoiler_text=message.content_warning)
