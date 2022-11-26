@@ -8,3 +8,5 @@ Usage:
 If your first run fails for any reason, delete your `database.db` file. Having to create it is 
 how we determine if we are doing our first run. If you don't delete it, the bot will welcome all users 
 on the server on its first successful run.
+
+Here's an example of it in action: https://oceanplayground.social/@welcome/109305611022115482
