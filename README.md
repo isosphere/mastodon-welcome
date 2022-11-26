@@ -1,8 +1,8 @@
 Usage:
-- Create a user with the Admin role
-- Create a virtual env and install packages using [poetry](https://python-poetry.org/) install
+- Create a user with the Admin role (I suggest using `tootctl` to do this)
+- Use [poetry](https://python-poetry.org/) install to create a virtual env and install packages 
 - Copy the example `.toml` config file to `config.toml` (or specify another path with `--config` and modify for your purposes
-- For the first execution you have to supply `--email` and `--password` so that a client credential can be created and saved
+- For the first execution you must supply `--email` and `--password` so that a client credential can be created and saved
 - You do not need to specify `--email` and `--password` after a succesful first run
 
 If your first run fails for any reason, delete your `database.db` file. Having to create it is 
