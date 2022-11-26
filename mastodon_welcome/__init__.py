@@ -4,6 +4,7 @@ import os
 import sqlite3
 import tomllib
 
+ACCOUNT_FETCH_LIMIT = 100000
 
 def check_db_exists(cursor: sqlite3.Cursor) -> bool:
     res = cursor.execute("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='welcome_log'")
@@ -85,7 +86,7 @@ if __name__ == '__main__':
     if fresh_database:
         print("Database was freshly created - we'll set all pre-existing users as of now to 'welcomed' to avoid spamming everyone on the server.")
 
-    all_accounts = mastodon.admin_accounts(remote=False, status='active')
+    all_accounts = mastodon.admin_accounts(remote=False, status='active', limit=ACCOUNT_FETCH_LIMIT)
     for account in all_accounts:
         # despite status='active', we still get zombie users from the API
         if not (account.confirmed and account.approved) or account.disabled or account.suspended or account.silenced:
