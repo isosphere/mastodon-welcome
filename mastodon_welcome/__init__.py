@@ -105,7 +105,8 @@ if __name__ == '__main__':
         elif not user_welcomed(cursor, account.id):
             result_id = None
             for message in config['messages']:
-                result = mastodon.status_post(status=f"@{account.username}, {message.content}", in_reply_to_id=result_id, visibility='unlisted', spoiler_text=message.content_warning)
+                content_warning = message['content_warning'] if 'content_warning' in message else None
+                result = mastodon.status_post(status=f"@{account.username}, {message['content']}", in_reply_to_id=result_id, visibility='unlisted', spoiler_text=content_warning)
                 result_id = result.id
             
             set_user_welcomed(cursor, account.id)
