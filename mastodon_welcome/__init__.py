@@ -12,11 +12,11 @@ def check_db_exists(cursor: sqlite3.Cursor) -> bool:
         return False
     return True
 
-def check_user_exists(cursor: sqlite3.Cursor, userid: int) -> bool:
+def user_exists(cursor: sqlite3.Cursor, userid: int) -> bool:
     res = cursor.execute("SELECT COUNT(*) FROM welcome_log WHERE userdb_id = ?", (userid,))
     return res.fetchone()[0] > 0
 
-def check_user_welcomed(cursor: sqlite3.Cursor, userid: int) -> bool:
+def user_welcomed(cursor: sqlite3.Cursor, userid: int) -> bool:
     res = cursor.execute("SELECT COUNT(*) FROM welcome_log WHERE userdb_id = ? AND welcomed = 1", (userid,))
     return res.fetchone()[0] > 0
 
@@ -92,7 +92,7 @@ if __name__ == '__main__':
             continue
         
         # does our welcome bot know about this user?
-        if not check_user_exists(cursor, account.id):
+        if not user_exists(cursor, account.id):
             create_user(cursor, account.id, account.username)
             connection.commit()      
         
@@ -101,7 +101,7 @@ if __name__ == '__main__':
             set_user_welcomed(cursor, account.id)
             connection.commit()
         
-        elif not check_user_welcomed(cursor, account.id):
+        elif not user_welcomed(cursor, account.id):
             result_id = None
             for message in config['messages']:
                 result = mastodon.status_post(status=f"@{account.username}, {message.content}", in_reply_to_id=result_id, visibility='unlisted', spoiler_text=message.content_warning)
